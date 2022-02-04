@@ -1,3 +1,23 @@
 <template>
-  App
+  <router-view />
 </template>
+
+<style lang="sass">
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import "~bootstrap/scss/functions"
+
+// 2. Include any default variable overrides here
+
+// 3. Include remainder of required Bootstrap stylesheets
+@import "~bootstrap/scss/variables"
+@import "~bootstrap/scss/mixins"
+@import "~bootstrap/scss/root"
+@import "~bootstrap/scss/utilities"
+
+// 4. Include any optional Bootstrap CSS as needed
+@import "~bootstrap/scss/reboot"
+@import "~bootstrap/scss/containers"
+@import "~bootstrap/scss/grid"
+@import "~bootstrap/scss/list-group"
+@import "~bootstrap/scss/utilities/api"
+</style>
