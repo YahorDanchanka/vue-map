@@ -17,12 +17,22 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from 'vue'
+import { onDeactivated, onMounted } from 'vue'
 import L from 'leaflet'
+import { io } from 'socket.io-client'
+import { Socket } from 'socket.io-client/build/esm/socket'
+
+let socket: Socket | null = null
 
 onMounted(() => {
   const map = L.map('map').setView([52.42416, 31.014281], 16)
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map)
+
+  socket = io('localhost:3000')
+})
+
+onDeactivated(() => {
+  socket?.disconnect()
 })
 </script>
 
