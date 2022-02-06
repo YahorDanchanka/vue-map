@@ -5,22 +5,21 @@
         <div id="map"></div>
       </div>
       <div class="col-lg-4">
-        <ul class="list-group">
-          <li class="list-group-item active">Егор Данченко</li>
-          <li class="list-group-item">Егорова Мария</li>
-          <li class="list-group-item">Ефремов Максим</li>
-          <li class="list-group-item">Мельников Леонид</li>
-        </ul>
+        <UserList :users="users" :socket-id="socketId" />
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { onDeactivated, onMounted } from 'vue'
+import { onDeactivated, onMounted, ref } from 'vue'
 import L from 'leaflet'
-import { io } from 'socket.io-client'
-import { Socket } from 'socket.io-client/build/esm/socket'
+import { io, Socket } from 'socket.io-client'
+import { IUser } from '@/store'
+import UserList from '@/components/UserList.vue'
+
+const users = ref<IUser[]>([])
+const socketId = ref('')
 
 let socket: Socket | null = null
 
@@ -29,6 +28,14 @@ onMounted(() => {
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map)
 
   socket = io('localhost:3000')
+
+  socket.on('connect', () => {
+    socketId.value = socket?.id || ''
+  })
+
+  socket.on('usersChange', (usersList: IUser[]) => {
+    users.value = usersList
+  })
 })
 
 onDeactivated(() => {

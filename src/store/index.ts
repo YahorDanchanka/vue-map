@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 
-interface IUser {
+export interface IUser {
   id: string
   name: string
 }
