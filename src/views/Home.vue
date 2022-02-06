@@ -60,6 +60,17 @@ onMounted(() => {
             waypoints: user.waypoints,
             show: false,
             fitSelectedRoutes: false,
+            routeWhileDragging: true,
+            useZoomParameter: true,
+            lineOptions: {
+              styles: [
+                {
+                  color: user.id === socket?.id ? 'red' : 'green',
+                  opacity: 1,
+                  weight: 5,
+                },
+              ],
+            },
           }).addTo(map)
           controls.push(control)
         }
