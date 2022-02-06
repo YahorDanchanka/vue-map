@@ -1,11 +1,14 @@
 import { Server } from 'socket.io'
-import { IUser } from '@/store'
+import { IUser, Waypoints } from '@/store'
 import { generateName, connectedUsers } from './helpers'
 
-interface ClientToServerEvents {}
+interface ClientToServerEvents {
+  getWaypoints: (waypoints: Waypoints) => void
+}
 
 interface ServerToClientEvents {
   usersChange: (users: IUser[]) => void
+  getWaypoints: (users: IUser[]) => void
 }
 
 interface InterServerEvents {}
@@ -30,4 +33,12 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     io.emit('usersChange', connectedUsers(io))
   })
+
+  socket.on('getWaypoints', (waypoints) => {
+    socket.data.waypoints = waypoints
+  })
 })
+
+setInterval(() => {
+  io.emit('getWaypoints', connectedUsers(io))
+}, 5000)
