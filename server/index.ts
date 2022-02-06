@@ -1,6 +1,6 @@
 import { Server } from 'socket.io'
 import { IUser } from '@/store'
-import { generateName } from './helpers'
+import { generateName, connectedUsers } from './helpers'
 
 interface ClientToServerEvents {}
 
@@ -23,22 +23,11 @@ const io = new Server<
   },
 })
 
-export function connectedUsers(): IUser[] {
-  const users: IUser[] = []
-
-  // @ts-ignore
-  for (let [id, socket] of io.of('/').sockets) {
-    users.push(<IUser>socket.data)
-  }
-
-  return users
-}
-
 io.on('connection', (socket) => {
   socket.data = { id: socket.id, name: generateName(socket.id) }
-  io.emit('usersChange', connectedUsers())
+  io.emit('usersChange', connectedUsers(io))
 
   socket.on('disconnect', () => {
-    io.emit('usersChange', connectedUsers())
+    io.emit('usersChange', connectedUsers(io))
   })
 })
