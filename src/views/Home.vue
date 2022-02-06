@@ -31,10 +31,10 @@ onMounted(() => {
 
   socket.on('connect', () => {
     socketId.value = socket?.id || ''
-  })
 
-  socket.on('usersChange', (usersList: IUser[]) => {
-    users.value = usersList
+    socket?.on('usersChange', (usersList: IUser[]) => {
+      users.value = usersList
+    })
   })
 })
 
